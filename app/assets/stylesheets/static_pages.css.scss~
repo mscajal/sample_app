@@ -5,7 +5,7 @@
 @import "bootstrap";
 
 /* mixins, variables, etc. */
-$gray: #222;
+$gray; #222;
 $lightGray: #999;
 $grayMediumLight: #eaeaea;
 
