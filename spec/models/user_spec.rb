@@ -25,6 +25,7 @@ describe User do
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }  
   it { should respond_to(:authenticate) }
 
   it { should be_valid }
@@ -95,6 +96,16 @@ describe User do
     it { should be_invalid }
   end
 
+  describe "email address with mixed case" do
+    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+
+    it "should be saved as all lower-case" do
+      @user.email = mixed_case_email
+      @user.save
+      @user.reload.email.should == mixed_case_email.downcase
+    end
+  end
+
   describe "return value of authenticate method" do
     before { @user.save }
     let(:found_user) { User.find_by_email(@user.email) }
@@ -104,10 +115,14 @@ describe User do
     end
   end
 
-  describe "with invalid password" do
-    let(:user_for_invalid_password) { found_user.authenticate("invalid") }
+  #describe "with invalid password" do
+  #  let(:user_for_invalid_password) { found_user.authenticate("invalid") }
+  #  it { should_not == user_for_invalid_password }
+  #  specify { user_for_invalid_password.should be_false }
+  #end
 
-    it { should_not == user_for_invalid_password }
-    specify { user_for_invalid_password.should be_false }
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
   end
 end
