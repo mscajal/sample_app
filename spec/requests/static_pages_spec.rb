@@ -6,19 +6,27 @@ describe "Static pages" do
 
   subject { page }
 
-  shared_examples_for "all static pages" do
-    it { should have_selector('h1',    text: heading) }
-    it { should have_selector('title', text: full_title(page_title)) }
-  end
-
   describe "Home page" do
     before { visit home_path }
  
     let(:heading)    { 'Sample App' }
     let(:page_title) { '' }
 
-    it_should_behave_like "all static pages"
-    it { should_not have_selector 'title', text: '| Help' }
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+        FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+        sign_in user
+        visit root_path
+      end
+
+      it "should render the user's feed" do
+        user.feed.each do |item|
+          page.should have_selector("li##{item.id}", text: item.content)
+        end
+      end
+    end
   end
 
   describe "Help page" do
@@ -27,7 +35,7 @@ describe "Static pages" do
     let(:heading)    { 'Help' }
     let(:page_title) { '' }
 
-    it_should_behave_like "all static pages"
+    #it_should_behave_like "all static pages"
   end
 
   describe "About page" do
@@ -36,7 +44,7 @@ describe "Static pages" do
     let(:heading)    { 'About Us' }
     let(:page_title) { '' }
 
-    it_should_behave_like "all static pages"
+    #it_should_behave_like "all static pages"
   end
 
   describe "Contact page" do
@@ -45,23 +53,23 @@ describe "Static pages" do
     let(:heading)    { 'Contact' }
     let(:page_title) { '' }
 
-    it_should_behave_like "all static pages"
+    #it_should_behave_like "all static pages"
   end
 
-  it "should have the right links on the layout" do
-    visit home_path
-    click_link "About"
-    page.should have_selector 'title', text: full_title('About Us')
-    click_link "Help"
-    page.should have_selector 'title', text: full_title('Help')
-    click_link "Contact"
-    page.should have_selector 'title', text: full_title('Contact')
-    click_link "Home"
-    page.should have_selector 'title', text: full_title('Home')
-    click_link "Sign up now!"
-    page.should # fill in
-    click_link "sample app"
-    page.should # fill in
-  end
+  #it "should have the right links on the layout" do
+    #visit home_path
+    #click_link "About"
+    #page.should have_selector 'title', text: full_title('About Us')
+    #click_link "Help"
+    #page.should have_selector 'title', text: full_title('Help')
+    #click_link "Contact"
+    #page.should have_selector 'title', text: full_title('Contact')
+    #click_link "Home"
+    #page.should have_selector 'title', text: full_title('Home')
+    #click_link "Sign up now!"
+    #page.should # fill in
+    #click_link "sample app"
+    #page.should # fill in
+  #end
 end
 
