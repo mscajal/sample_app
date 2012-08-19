@@ -11,7 +11,7 @@ gem 'faker', '1.0.1'
 gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
 
-gem 'heroku'
+#gem 'heroku'
 
 group :development do
   gem 'sqlite3'

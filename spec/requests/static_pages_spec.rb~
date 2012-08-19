@@ -65,7 +65,7 @@ describe "Static pages" do
     #click_link "Contact"
     #page.should have_selector 'title', text: full_title('Contact')
     #click_link "Home"
-    #page.should have_selector 'title', text: full_title('Ruby on Rails Tutorial Sample App | Home')
+    #page.should have_selector 'title', text: full_title('Home')
     #click_link "Sign up now!"
     #page.should # fill in
     #click_link "sample app"
